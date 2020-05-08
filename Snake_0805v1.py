@@ -1,12 +1,28 @@
-# imports
-
 import pygame
 
-# Global Variables
 
-    # Window properties
+def main():
+    # inicializa Pygame
+    pygame.init()
 
+    # establece el título de la ventana
+    pygame.display.set_caption('Crear ventana')
 
+    # establece el tamaño de la ventana
+    pygame.display.set_mode((600, 400))
+
+    # bucle infinito
+    while True:
+        # retorna un solo evento de la cola de eventos
+        event = pygame.event.wait()
+
+        # si se presiona el botón 'cerrar' de la ventana
+        if event.type == pygame.QUIT:
+            # detiene el bucle
+            break
+
+    # finaliza Pygame
+    pygame.quit()
 
 class Snake():
 
@@ -23,15 +39,14 @@ class Snake():
         
         pass
 
-    def Eating(self,apple)
+    def Eating(self,apple):
 
         pass
 
     def Colide(self, array):
 
         pass
-    d
-
+    
 
 class Apple():
 
@@ -58,9 +73,6 @@ class Screens():
 
 
 
-
-
 if __name__=="__main__":
 
-
-    pass
+    main()
