@@ -13,6 +13,8 @@ pg.font.init()
 
 WIDTH = 500
 HEIGHT = 500
+rw = 10
+rh = 10
 
 WHITE = (255,255,255)
 RED   = (255,0,0)
@@ -29,13 +31,45 @@ class Snake():
 
     def __init__(self):
 
+        self.speed = 1
+        self.posx = WIDTH//2 - rw//2
+        self.posy = HEIGHT//2 - rh//2
+        self.posx1 = WIDTH//2 - rw//2 
+        self.posy1 = HEIGHT//2 - rh//2
+        self.body = [pg.Rect((self.posx,self.posy),(rw,rh)), pg.Rect((self.posx1,self.posy1),(rw,rh))]
+        
         pass
 
-    def Draw(self):
-
+    def Draw(self,screen,color):
+        
+        pg.draw.rect(screen,color,self.body[0],0)
+        pg.draw.rect(screen,color,self.body[1],0)
+        
+        
         pass
     
     def Move(self, key):
+
+        if key == pg.K_UP:
+            self.body[1].centery = self.body[0].centery  
+            self.body[0].centery -= rh
+    
+            print(self.body[0].centery)
+            
+            pass
+
+        elif key== pg.K_DOWN:
+            pass
+        
+        elif key== pg.K_RIGHT:
+            pass
+        
+        elif key== pg.K_LEFT:
+            pass
+        
+        else:
+            print("Moving")
+            pass
         
         pass
 
@@ -80,7 +114,7 @@ def Main():
 
     Game_Screen_Pause = myfont.render("PAUSE", False, RED)
 
-    
+    orochi = Snake()
 
     
     while True:
@@ -118,12 +152,17 @@ def Main():
 
             #Here goes any display logic to game start screen
             screen.fill(WHITE)
+            orochi.Draw(screen,GREEN)
+            
             
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
+                    orochi.Move(event.key)                    
+                    
                     if event.key == pg.K_SPACE:
                         current_game_state = "pause"
                         print("Game state changed to PAUSE")
+                    
                 if event.type == pg.QUIT:
                     print("QUIT")
                     pg.quit()
@@ -180,7 +219,7 @@ def Main():
                 sys.exit()
               
 
-        pg.display.flip()
+        pg.display.update()
         #print("flipped")
           
           
