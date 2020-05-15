@@ -39,14 +39,14 @@ class Snake():
         
         self.body = [pg.Rect((self.posx,self.posy),(rw,rh)), pg.Rect((self.posx,self.posy),(rw,rh)), pg.Rect((self.posx,self.posy),(rw,rh)), pg.Rect((self.posx,self.posy),(rw,rh)), pg.Rect((self.posx,self.posy),(rw,rh))]
         self.prev_state = "up"
-        
+        self.body_state = ["up","up","up","up","up"]  
         pass
 
     def Draw(self,screen,color):
         
         for i in range(len(self.body)):
             pg.draw.rect(screen,color,self.body[i],0)
-            print("Posiciong y ", self.body[i].centery, " Cuerpo ",  i)
+            #print("Posiciong y ", self.body[i].centery, " Cuerpo ",  i)
             #print(i)    
         pass
     
@@ -82,61 +82,134 @@ class Snake():
             return self.prev_state
         
         pass
+
     
-    def Move(self,screen,color):
+    def SetBodyState(self, i):
+
+        self.body_state[0] = self.prev_state
+
+        if i > 0:
+            self.body_state[i] = self.body_state[i-1]
+        
+    
+    def Move(self,screen,color,c):
         
         #print(current_move_state)
         #time.sleep(1/2)
+        print(self.body_state)
         
-        
-        if self.prev_state == "up":
+        for i in range(len(self.body)):
 
-            #print("Up State",self.body[0].centery)
-            for i in range(len(self.body)-1):
+            if self.body_state[i] == "up":
+            
+
+                if i == len(self.body)-1:
+
+                    self.body[i].centery -= rh
+            
+                else:
+                    
+                    self.body[i+0].centery -= rh
+                    self.body[i+1].centery = self.body[i+0].centery
+                    self.body[i].centerx = self.body[i-1].centerx
+            
+                    
+            elif self.body_state[i] == "right":
                 
-                #print(i)
-                self.body[i+1].centery = self.body[i].centery
-                self.body[i].centery -= rh   
-                self.body[i+1].centerx = self.body[i].centerx
-                self.Draw(screen,color)
-            
-            pass
-        
 
-        elif self.prev_state == "down":
-            #print("Down State",self.body[0].centery)
-            for i in range(len(self.body)-1):
-                self.body[i+1].centery = self.body[i+0].centery  
-                self.body[i+0].centery += rh
-                self.body[i+1].centerx = self.body[i+0].centerx
-                self.Draw(screen,color)
-            pass
-        
-        elif self.prev_state == "right":
-            #print("Right State",self.body[0].centerx)
-            for i in range(len(self.body)-1):
-                self.body[i+1].centerx = self.body[i+0].centerx  
-                self.body[i+0].centerx += rw
-                self.body[i+1].centery = self.body[i+0].centery
-                self.Draw(screen,color)
-            pass
-        
-        elif self.prev_state == "left":
+                if i == len(self.body)-1:
+                    
+
+                    self.body[i].centerx+= rh
             
-            #print("Left State",self.body[0].centerx)
-            for i in range(len(self.body)-1):
-                self.body[i+1].centerx = self.body[i+0].centerx  
-                self.body[i+0].centerx -= rw
-                self.body[i+1].centery = self.body[i+0].centery
+                else:
+                    
+                    self.body[i+0].centerx += rh
+                    self.body[i+1].centerx = self.body[i+0].centerx
+                    self.body[i].centery = self.body[i-1].centery
+                    pass
+                pass
+            pass
+        
+                    
+        self.SetBodyState(c)
+                    
+        self.Draw(screen,color)
+                    
+             
+        """if self.prev_state == "up":
+
+                #print("Up State",self.body[0].centery)
+                for i in range(0,len(self.body)):
+                    
+                    if i == len(self.body)-1:
+                        
+                        self.body[i].centery -= rh
+                        
+                        
+                    else:
+                        self.body[i+0].centery -= rh
+                        self.body[i+1].centery = self.body[i+0].centery
+                        self.body[i].centerx = self.body[i-1].centerx
                 self.Draw(screen,color)
-            pass
-        
-        else:
-            #print("Moving else")
+                        
+                
             
-            pass
-        
-        pass
+                    
+
+            elif self.prev_state == "down":
+
+                for i in range(0,len(self.body)):
+                    
+                    if i == len(self.body)-1:
+                        
+                        self.body[i].centery += rh
+                    
+                    else:
+                        self.body[i+0].centery += rh
+                        self.body[i+1].centery = self.body[i+0].centery  
+                    
+                    self.body[i].centerx = self.body[i-1].centerx
+            
+                self.Draw(screen,color)
+            
+            elif self.prev_state == "right":
+                #print("Right State",self.body[0].centerx)
+                for i in range(0,len(self.body)):
+
+                    SetBodyState(i)
+                    
+
+
+                    
+                    if i == len(self.body)-1:
+                        
+                        self.body[i].centerx += rh
+                    
+                    else:
+                        self.body[i+0].centerx += rh
+                        self.body[i+1].centerx = self.body[i+0].centerx 
+                    
+                    self.body[i].centery = self.body[i-1].centery
+                    
+                self.Draw(screen,color)
+                
+            elif self.prev_state == "left":
+                
+                for i in range(0,len(self.body)):
+                    
+                    if i == len(self.body)-1:
+                        
+                        self.body[i].centerx -= rh
+                    
+                    else:
+                        self.body[i+0].centerx -= rh
+                        self.body[i+1].centerx = self.body[i+0].centerx 
+                    
+                    self.body[i].centery = self.body[i-1].centery
+            
+                self.Draw(screen,color)"""
+            
 
     def Eating(self,apple):
 
@@ -182,6 +255,7 @@ def Main():
 
     orochi = Snake()
 
+    c = 0
     
     while True:
 
@@ -234,7 +308,8 @@ def Main():
                     pg.quit()
                     sys.exit()
                     
-            orochi.Move(screen,GREEN)
+            orochi.Move(screen,GREEN,c)
+            c += 1
             
             #Here ends any display logic to game start screen
 
@@ -288,7 +363,7 @@ def Main():
 
         pg.display.update()
         #print("flipped")
-        print("a")
+          
           
           
         
@@ -301,4 +376,5 @@ if __name__=="__main__":
     Main()
     
     pass
+
 
